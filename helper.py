@@ -51,3 +51,16 @@ def data_over_time(df, col):
     count_df = df_unique.groupby('Year').count()[col].reset_index()
     count_df.rename(columns={col: 'count'}, inplace=True)
     return count_df
+
+def most_successful(df, sport):
+    temp_df = df.dropna(subset=['Medal'])
+
+    if sport != 'Overall':
+        temp_df = temp_df[temp_df['Sport'] == sport]
+
+    top_athletes = temp_df['Name'].value_counts().reset_index()
+    top_athletes.columns = ['Name', 'Medals']
+
+    merged_df = top_athletes.merge(df[['Name', 'Sport', 'region']], on='Name', how='left').drop_duplicates('Name')
+
+    return merged_df
