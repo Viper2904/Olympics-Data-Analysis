@@ -166,3 +166,30 @@ if user_menu=="Athlete-wise Analysis":
     sns.scatterplot(data=temp_df, x='Weight', y='Height', hue='Medal', style='Sex', s=60, ax=ax)
     
     st.pyplot(fig)
+    
+st.title("Men vs Women Participation over the Years")
+
+final = helper.men_vs_women(df)
+
+required_columns = {'Year', 'Male', 'Female'}
+if not final.empty and required_columns.issubset(final.columns):
+    final_melted = final.melt(
+        id_vars='Year',
+        value_vars=['Male', 'Female'],
+        var_name='Gender',
+        value_name='Number of Athletes'
+    )
+    
+    fig = px.line(
+        final_melted,
+        x='Year',
+        y='Number of Athletes',
+        color='Gender',
+        markers=True,
+        title="Trend of Male vs Female Participation"
+    )
+    
+    st.plotly_chart(fig)
+else:
+    st.warning("No data available to show male vs female participation.")
+
