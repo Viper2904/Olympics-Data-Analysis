@@ -153,5 +153,16 @@ if user_menu=="Athlete-wise Analysis":
 
     st.title("Distribution of Age of Gold Medalists across Sports")
     st.plotly_chart(fig)
-
     
+    sport_list = df['Sport'].dropna().unique().tolist()
+    sport_list.sort()
+    sport_list.insert(0, 'Overall')
+    
+    st.title('Height vs Weight')
+    selected_sport = st.selectbox('Select a Sport', sport_list)
+    temp_df = helper.weight_vs_height(df, selected_sport)
+
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=temp_df, x='Weight', y='Height', hue='Medal', style='Sex', s=60, ax=ax)
+    
+    st.pyplot(fig)
