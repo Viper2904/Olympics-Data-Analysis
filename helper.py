@@ -101,3 +101,15 @@ def weight_vs_height(df,sport):
     athletes_df['Medal'].fillna('No Medal',inplace=True)
     temp_df=athletes_df[athletes_df['Sport']=='Athletics']
     return temp_df
+
+def men_vs_women(df):
+    athletes_df=df.drop_duplicates(subset=['Name','region'])
+    
+    men=athletes_df[athletes_df['Sex']=='M'].groupby('Year').count()['Name'].reset_index()
+    women=athletes_df[athletes_df['Sex']=='F'].groupby('Year').count()['Name'].reset_index()
+    
+    final=men.merge(women,on='Year',how='left')
+    final.rename(columns={'Name_x':'Male','Name_y':'Female'})
+    
+    final.fillna(0,inplace=True)
+    return final
