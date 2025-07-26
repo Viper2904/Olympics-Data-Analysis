@@ -95,3 +95,9 @@ def most_successful_countrywise(df, country):
     merged_df = top_athletes.merge(df[['Name', 'Sport']], on='Name', how='left').drop_duplicates('Name')
 
     return merged_df
+
+def weight_vs_height(df,sport):
+    athletes_df=df.drop_duplicates(subset=['Name','region'])
+    athletes_df['Medal'].fillna('No Medal',inplace=True)
+    temp_df=athletes_df[athletes_df['Sport']=='Athletics']
+    return temp_df
